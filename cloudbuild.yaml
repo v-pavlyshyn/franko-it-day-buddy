@@ -1,0 +1,7 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build','-t','europe-docker.pkg.dev/$PROJECT_ID/demos/itday-buddy:$COMMIT_SHA','.']
+images:
+  - 'europe-docker.pkg.dev/$PROJECT_ID/demos/itday-buddy:$COMMIT_SHA'
+substitutions:
+  COMMIT_SHA: 'v1'
