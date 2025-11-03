@@ -5,8 +5,8 @@
 
 [⬇️ Слайди (PDF)](docs/slides/franko-it-day-buddy-slides.pdf)
 
-> 🎯 Мета: максимально простий досвід для студентів. **Cloud SQL** доданий як опційний *Pro-блок* (для тих, хто має trial-кредити).  
-> 🧰 MCP-like «інструменти» реалізовано через HTTP (`/tools/*`) для простоти демо.
+> 🎯 Мета: Досвід для студентів. **Cloud SQL** доданий як опційний *Pro-блок* (для тих, хто має trial-кредити).  
+> 🧰 MCP-like «інструменти» реалізовано через HTTP (`/tools/*`).
 
 ---
 
@@ -27,10 +27,11 @@
    python3 -m venv .venv && source .venv/bin/activate
    pip install -r api/requirements.txt
    cp .env.example .env
-   # Заповніть: PROJECT_ID, LOCATION (напр. europe-west4), MODEL_NAME (gemini-1.5-flash)
+   # Заповніть: PROJECT_ID, LOCATION (напр. europe-west4), MODEL_NAME (gemini-2.5-flash)
    # За потреби: USE_VERTEX_MOCK=true
    ```
-4. **(Опційно) Засів FAQ**
+4. **(Опційно) Задати FAQ**
+
    ```bash
    python api/seed_faq.py
    ```
@@ -84,7 +85,7 @@ Deploy: Cloud Build -> Artifact Registry -> Cloud Run
 ## 🔧 Конфігурація (.env)
 - `PROJECT_ID` — GCP Project ID  
 - `LOCATION` — регіон Vertex AI (напр. `europe-west4`)  
-- `MODEL_NAME` — напр. `gemini-1.5-flash`  
+- `MODEL_NAME` — напр. `gemini-2.5-flash`  
 - `DB_BACKEND` — `firestore` (за замовчуванням) або `sql`  
 - `USE_VERTEX_MOCK` — `true|false` фолбек, якщо немає доступу до Vertex AI  
 - `DB_URL` — (опційно для SQL) рядок підключення SQLAlchemy
@@ -129,7 +130,7 @@ Deploy: Cloud Build -> Artifact Registry -> Cloud Run
 ---
 
 ## 📚 Матеріали для лектора
-- [docs/WORKSHOP_SCRIPT.md](docs/WORKSHOP_SCRIPT.md) — сценарій воркшопу по хвилинах
+- [docs/WORKSHOP_SCRIPT.md](docs/WORKSHOP_SCRIPT.md) — сценарій воркшопу
 - [docs/slides/franko-it-day-buddy-slides.pdf](docs/slides/franko-it-day-buddy-slides.pdf) — слайди
 
 MIT © 2025 Franko IT Day Workshop

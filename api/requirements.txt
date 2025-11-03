@@ -1,12 +1,15 @@
 fastapi==0.115.5
 uvicorn[standard]==0.32.0
-pydantic==2.9.2
+pydantic>=2.12,<3
 python-dotenv==1.0.1
 
 # Google Cloud
-google-cloud-aiplatform==1.70.0
-google-cloud-firestore==2.17.0
-google-auth==2.36.0
+google-cloud-aiplatform>=1.70.0
+protobuf>=6.30.0,<7
+googleapis-common-protos>=1.71.0
+google-cloud-firestore>=2.21.0
+proto-plus>=1.22.3
+google-auth>=2.36.0
 
 # Optional SQL (Pro-block)
 SQLAlchemy==2.0.36
