@@ -3,7 +3,7 @@ from typing import Optional
 
 USE_VERTEX_MOCK = os.getenv("USE_VERTEX_MOCK", "false").lower() == "true"
 PROJECT_ID = os.getenv("PROJECT_ID")
-LOCATION = os.getenv("LOCATION", "europe-west4")
+LOCATION = os.getenv("LOCATION", "europe-central2")
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash")
 
 logger = logging.getLogger("llm")

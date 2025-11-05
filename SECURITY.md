@@ -7,4 +7,4 @@
 - Cloud Run admin/invoker
 - Artifact Registry writer
 - Datastore user
-- Vertex AI user
+- Vertex AI (Google Gen AI) user
