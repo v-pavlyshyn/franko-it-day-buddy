@@ -1,5 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
 
@@ -15,6 +17,19 @@ else:
 PROJECT_ID = os.getenv("PROJECT_ID", "")
 
 app = FastAPI(title="Franko IT Day Buddy")
+
+# Dev CORS (для UI/Pages). У проді налаштуй allow_origins під свій домен.
+if os.getenv("ENABLE_DEV_CORS", "false").lower() == "true":
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+@app.get("/")
+def index():
+    return RedirectResponse(url="/docs")
 
 class ChatIn(BaseModel):
     user: str
@@ -65,3 +80,4 @@ def chat(inp: ChatIn):
     db.save_message(inp.user, "assistant", answer)
 
     return {"answer": answer}
+    
