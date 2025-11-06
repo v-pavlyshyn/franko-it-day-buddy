@@ -1,11 +1,11 @@
-# Franko IT Day Buddy — AI мікросервіс на GCP (Cloud Run + Firestore + Cloud Build + Vertex AI)
+# Franko IT Day Buddy — LLM wrapper на GCP (Cloud Run + Firestore + Cloud Build + Google Gen AI)
 
-Навчальний репозиторій для 90-хв воркшопу: збираємо **AI-помічника події** з простим API `/chat`,
+Навчальний репозиторій для 90-хв воркшопу: збираємо **AI-помічника для івенту** з простим API `/chat`,
 історією діалогу у **Firestore**, та генеративними відповідями через **Vertex AI (Google Gen AI)**.
 
 [⬇️ Слайди (PDF)](docs/slides/franko-it-day-buddy-slides.pdf)
 
-> 🎯 Мета: Досвід для студентів **Cloud Run, Cloud Build, Firestore, Vertex AI**. **Cloud SQL** доданий як опційний *Pro-блок*.  
+> 🎯 Мета: Досвід для студентів **Cloud Run, Cloud Build, Firestore, Google Gen AI**. **Cloud SQL** доданий як опційний *Pro-блок*.  
 > 🧰 MCP-like «інструменти» реалізовано через HTTP (`/tools/*`).
 
 ---
@@ -73,7 +73,7 @@ gcloud run deploy itday-buddy --image=$IMAGE --region=europe-central2 --allow-un
 
 ## 🧩 Архітектура
 ```text
-(Client) -> /chat (FastAPI) -> Vertex AI (Google Gen AI) (Gemini)
+(Client) -> /chat (FastAPI) -> Vertex AI (Google Gen AI)
                             -> Firestore (history, faq)
                             -> MCP-like HTTP tools (/tools/*)
 Deploy: Cloud Build -> Artifact Registry -> Cloud Run
@@ -123,8 +123,7 @@ Deploy: Cloud Build -> Artifact Registry -> Cloud Run
 
 ## 🧹 Як **видалити все** після демо (щоб не було витрат)
 
-Нижче — безпечний чек‑лист. Команди роблять **тільки те**, що ми створювали в цьому воркшопі.
-Перед запуском задай змінні (підстав свій проєкт/назви, якщо відрізняються):
+Перед запуском задайте змінні (підстав свій проєкт/назви, якщо відрізняються):
 
 ```bash
 PROJECT_ID=$(gcloud config get-value project)
@@ -141,17 +140,9 @@ gcloud run services delete $SERVICE --region=$RUN_REGION --quiet || true
 ```
 
 ### 2) Видалити образи/репозиторій в Artifact Registry
-> Якщо **репозиторій `demos` використовуєш лише для цього проєкту**, можна видалити цілий репозиторій.
-```bash
-# варіант А: видалити лише образи, залишивши репозиторій
-gcloud artifacts docker images list $ARTIFACT_REGION-docker.pkg.dev/$PROJECT_ID/$REPO --format='value(package)' | while read -r IMG; do
-  DIGEST=$(gcloud artifacts docker images list "$IMG" --format='value(digest)' | head -n1)
-  if [[ -n "$DIGEST" ]]; then
-    gcloud artifacts docker images delete "$IMG@$DIGEST" --quiet --delete-tags || true
-  fi
-done
 
-# варіант Б: видалити весь репозиторій (обережно!)
+# Видаляємо весь репозиторій
+```bash
 gcloud artifacts repositories delete $REPO --location=$ARTIFACT_REGION --quiet || true
 ```
 
@@ -163,16 +154,16 @@ export PROJECT_ID=$PROJECT_ID
 python scripts/firestore_cleanup.py
 ```
 
-### 4) (Опційно) Видалити Cloud SQL інстанс (якщо створював Pro‑блок)
-```bash
-gcloud sql instances delete $SQL_INSTANCE --quiet || true
-```
-
-### 5) (Опційно) Вимкнути API для перестрахування
+### 4) (Опційно) Вимкнути API для перестрахування
 > Після вимкнення забуті виклики не згенерують витрати.
 ```bash
 gcloud services disable aiplatform.googleapis.com --quiet || true
 gcloud services disable run.googleapis.com         --quiet || true
+```
+
+### 5) (Опційно) Видалити Cloud SQL інстанс (якщо створював Pro‑блок)
+```bash
+gcloud sql instances delete $SQL_INSTANCE --quiet || true
 ```
 
 ### 6) (Опційно) Видалити сервісний акаунт воркшопу
@@ -187,7 +178,7 @@ gcloud builds triggers list --format='value(id, name)'
 gcloud builds triggers delete <TRIGGER_ID> --quiet
 ```
 
-> **Порада:** постав **Budget Alerts** у Billing (квота $0 або $1) перед демо — це дає e‑mail/Slack попередження ще до появи рахунків.
+> **Порада:** поставте **Budget Alerts** у Billing (квота $0 або $1) перед демо — це дає e‑mail/Slack попередження ще до появи рахунків.
 
 ---
 
